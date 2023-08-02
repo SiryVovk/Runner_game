@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 
-public class PlayerController : MonoBehaviour
+public class SwipeController : MonoBehaviour
 {
     [SerializeField] private float minSwipeDistanse = 50f;
 
-    private float swipeDirectionsMin = 0.5f;
+    private float swipeDistanceMin = 0.5f;
 
     private Finger movementFinger;
 
@@ -60,19 +60,19 @@ public class PlayerController : MonoBehaviour
 
     private void HandleSwipe(Vector2 direction)
     {
-        if(direction.x > swipeDirectionsMin)
+        if(direction.x > swipeDistanceMin)
         {
             moveRight?.Invoke();
         }
-        else if(direction.x < -swipeDirectionsMin)
+        else if(direction.x < -swipeDistanceMin)
         {
             moveLeft?.Invoke();
         }
-        else if( direction.y > swipeDirectionsMin)
+        else if( direction.y > swipeDistanceMin)
         {
             moveUp?.Invoke();
         }
-        else if(direction.y < -swipeDirectionsMin)
+        else if(direction.y < -swipeDistanceMin)
         {
             moveDown?.Invoke();
         }

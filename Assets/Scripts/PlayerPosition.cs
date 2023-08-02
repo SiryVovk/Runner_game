@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
+    [Header("Lane")]
     [SerializeField] private float laneWidth = 2f;
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float changeLaneDuration = 80f;
+    [Header("Speed")]
     [SerializeField] private float forwardSpeed = 5;
+    [SerializeField] private float speedIncreaseStep = 0.01f;
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 10f;
 
-    private float maxSpeed;
+    private float maxSpeed = 10;
+
     private float slideDuration = 1.5f;
-    private float colliderCenterChange = 0.5f;
+
+    private float normalColliderYSize = 2;
+    private float normalColliderYCenter = 1;
+    private float slidColliderYSize = 1;
+    private float slidColliderYCenter = 0.5f;
 
     private int playerLane = 2;
     private int maxLane = 3;
@@ -26,18 +36,18 @@ public class PlayerPosition : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.moveRight += MoveRight;
-        PlayerController.moveLeft += MoveLeft;
-        PlayerController.moveUp += MoveUp;
-        PlayerController.moveDown += MoveDown;
+        SwipeController.moveRight += MoveRight;
+        SwipeController.moveLeft += MoveLeft;
+        SwipeController.moveUp += MoveUp;
+        SwipeController.moveDown += MoveDown;
     }
 
     private void OnDisable()
     {
-        PlayerController.moveRight -= MoveRight;
-        PlayerController.moveLeft -= MoveLeft;
-        PlayerController.moveUp -= MoveUp;
-        PlayerController.moveDown -= MoveDown;
+        SwipeController.moveRight -= MoveRight;
+        SwipeController.moveLeft -= MoveLeft;
+        SwipeController.moveUp -= MoveUp;
+        SwipeController.moveDown -= MoveDown;
     }
 
     private void Awake()
@@ -46,9 +56,15 @@ public class PlayerPosition : MonoBehaviour
         playerCollider = GetComponent<BoxCollider>();
     }
 
+
+
     private void Update()
     {
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        if(forwardSpeed < maxSpeed)
+        {
+            forwardSpeed += (speedIncreaseStep * Time.deltaTime);
+        }
     }
 
     private void MoveRight()
@@ -73,12 +89,12 @@ public class PlayerPosition : MonoBehaviour
     {
         Vector3 move = direction * laneWidth;
         Vector3 newPosition = transform.position + direction;
-        transform.position = newPosition;
+        transform.position = Vector3.Lerp(transform.position,newPosition,changeLaneDuration * Time.deltaTime);
     }
 
     private void MoveUp()
     {
-        if(onGround)
+        if(onGround && !isSliding)
         {
             onGround = false;
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -87,7 +103,7 @@ public class PlayerPosition : MonoBehaviour
 
     private void MoveDown()
     {
-        if (!isSliding)
+        if (!isSliding && onGround)
         {
             StartCoroutine(SlideStart());
         }
@@ -96,15 +112,27 @@ public class PlayerPosition : MonoBehaviour
     private IEnumerator SlideStart()
     {
         isSliding = true;
-        Vector3 newCenter = playerCollider.center;
-        newCenter.y -= colliderCenterChange;
-        playerCollider.size = newCenter;
+
+        ChangeCollider(slidColliderYSize, slidColliderYCenter);
+
         yield return new WaitForSeconds(slideDuration / Time.timeScale);
-        isSliding = false;
-        newCenter = playerCollider.center;
-        newCenter.y += colliderCenterChange;
-        playerCollider.center = newCenter;
+
+        ChangeCollider(normalColliderYSize, normalColliderYCenter);
+
+         isSliding = false;
+        
     }
+
+    private void ChangeCollider(float colliderYSize, float colliderYCenter)
+    {
+        Vector3 newColliderSize = playerCollider.size;
+        newColliderSize.y = colliderYSize;
+        playerCollider.size = newColliderSize;
+        Vector3 newColliderCenter = playerCollider.center;
+        newColliderCenter.y = colliderYCenter;
+        playerCollider.center = newColliderCenter;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag(roadTag))
