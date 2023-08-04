@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4699778444458284842}
   - component: {fileID: 2163750038691605990}
   - component: {fileID: 1854728495}
+  - component: {fileID: 1854728498}
   - component: {fileID: 1962765931845136837}
   - component: {fileID: 1854728497}
   m_Layer: 0
@@ -61,7 +62,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e79129ab0e2814796094b9fed2b3f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laneWidth: 2
+  laneWidth: 1.5
+  changeLaneDuration: 200
+  forwardSpeed: 5
+  speedIncreaseStep: 0.01
+  jumpForce: 5
+--- !u!114 &1854728498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699778444458284843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 254924ab3bc68cc4f9ff63738b9d0802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &1962765931845136837
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -73,7 +90,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.5, z: 1}
+  m_Size: {x: 0.8, y: 2, z: 0.8}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &1854728497
 Rigidbody:
@@ -89,7 +106,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1001 &4699778443379481210
 PrefabInstance:

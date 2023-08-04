@@ -6,8 +6,7 @@ public class RoadMover : MonoBehaviour
 {
     [SerializeField] private ObjectPooler roadPool;
 
-    [SerializeField] private Transform nextSpawnTransform;
-    [SerializeField] private Vector3 pos;
+    private Transform nextSpawnTransform;
 
     private static RoadMover instance;
     public static RoadMover Instance
@@ -31,7 +30,6 @@ public class RoadMover : MonoBehaviour
     public void SetNextSpawnPointTransform(Transform transform)
     {
         nextSpawnTransform = transform;
-        pos = transform.position;
     }
 
     public void ActivatePoolObjects(int amount)

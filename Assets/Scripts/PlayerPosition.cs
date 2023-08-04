@@ -19,8 +19,8 @@ public class PlayerPosition : MonoBehaviour
 
     private float normalColliderYSize = 2;
     private float normalColliderYCenter = 1;
-    private float slidColliderYSize = 1;
-    private float slidColliderYCenter = 0.5f;
+    private float slidColliderYSize = 0.5f;
+    private float slidColliderYCenter = 0.25f;
 
     private int playerLane = 2;
     private int maxLane = 3;
@@ -28,8 +28,6 @@ public class PlayerPosition : MonoBehaviour
 
     private bool onGround = true;
     private bool isSliding = false;
-
-    private string roadTag = "Road";
 
     private Rigidbody playerRB;
     private BoxCollider playerCollider;
@@ -55,8 +53,6 @@ public class PlayerPosition : MonoBehaviour
         playerRB = GetComponent<Rigidbody>();
         playerCollider = GetComponent<BoxCollider>();
     }
-
-
 
     private void Update()
     {
@@ -88,8 +84,8 @@ public class PlayerPosition : MonoBehaviour
     private void ChangeLane(Vector3 direction)
     {
         Vector3 move = direction * laneWidth;
-        Vector3 newPosition = transform.position + direction;
-        transform.position = Vector3.Lerp(transform.position,newPosition,changeLaneDuration * Time.deltaTime);
+        Vector3 newPosition = transform.position + move;
+        transform.position = Vector3.Lerp(transform.position,newPosition,changeLaneDuration);
     }
 
     private void MoveUp()
@@ -133,12 +129,9 @@ public class PlayerPosition : MonoBehaviour
         playerCollider.center = newColliderCenter;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void SetOnGround()
     {
-        if (collision.gameObject.CompareTag(roadTag))
-        {
-            onGround = true;
-        }
+        onGround = true;
     }
 
 }

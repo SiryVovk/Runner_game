@@ -9,7 +9,6 @@ public class ObjectPooler : MonoBehaviour
 
     private List<GameObject> poolObjects;
     private int poolAmount;
-    private float roadZLength = 10;
 
     private List<GameObject> poolList;
 
@@ -20,39 +19,22 @@ public class ObjectPooler : MonoBehaviour
 
         poolList = new List<GameObject>();
 
-        Transform lastPosition = null;
-
         for(int i = 0; i < poolObjects.Count - 1; i++)
         {
             GameObject obj = Instantiate(poolObjects[i]);
 
-            if (i > poolAmount)
-            {
-                obj.transform.SetParent(transform, true);
-                obj.SetActive(false);
-                poolList.Add(obj);
-            }
-            else
-            {
-                obj.transform.SetParent(transform, true);
-                obj.SetActive(true);
-                Vector3 position = obj.transform.position;
-                position.z = roadZLength * i;
-                obj.transform.position = position;
-                poolList.Add(obj);
-                if(i == poolAmount)
-                {
-                    lastPosition = obj.transform;
-                }
-            }
+            obj.transform.SetParent(transform, true);
+            obj.SetActive(false);
+            poolList.Add(obj);
         }
 
-        if (lastPosition != null)
-        {
-            RoadMover.Instance.SetNextSpawnPointTransform(lastPosition);
-        }
+        ActivateFirstRoads();
     }
 
+    private void ActivateFirstRoads()
+    {
+        RoadMover.Instance.SpawnNextRoadTile(poolAmount);
+    }
     public void ActivatePoolObjects(int amountToActivate)
     {
         for(int i = 0; i < amountToActivate; i++)
