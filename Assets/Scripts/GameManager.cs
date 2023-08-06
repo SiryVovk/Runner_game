@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private float score = 0;
+
+    public float Score 
+    { 
+        get { return score; }
+        private set { score = value; }
+    }
+
     private void OnEnable()
     {
         SwipeController.firstTap += StartGame;
-        PlayerCollisions.gameOver += GameOver;
+        PlayerCollisions.gameOver += StopGame;
     }
 
     private void OnDisable()
     {
         SwipeController.firstTap -= StartGame;
-        PlayerCollisions.gameOver -= GameOver;
+        PlayerCollisions.gameOver -= StopGame;
     }
 
     private void Start()
@@ -21,12 +29,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    private void StartGame()
+    private void Update()
+    {
+        score += Time.deltaTime;    
+    }
+
+    public void StartGame()
     {
         Time.timeScale = 1;
     }
 
-    private void GameOver()
+    public void StopGame()
     {
         Time.timeScale = 0;
     }

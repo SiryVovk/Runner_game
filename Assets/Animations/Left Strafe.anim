@@ -46244,9 +46244,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.6666667
-    functionName: LeftStrafeEnd
+    functionName: LeftStrafeExit
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 049e5246ad1da9b4ca0d8e2c2b7ed504, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
